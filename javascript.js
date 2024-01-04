@@ -6,11 +6,42 @@ function gameBoard() {
     for(let i = 0; i < rows; i++) {
         board[i] = [];
         for(let j = 0; j < columns; j++) {
-            board[i].push('0');
+            board[i].push(cell());
         }
     };
+    
+    const getBoard = () => board;
 
-    console.log(board);
+    const printBoard = () => {
+        const boardWithCellValues = board.map((row) => 
+            row.map((cell) => cell.getSymbol()));
+        
+        console.log(boardWithCellValues);
+    };
+
+    printBoard();
+
+    return {
+        getBoard,
+        printBoard,
+    };
+}
+
+gameBoard();
+
+function cell() {
+    let symbol = ' ';
+
+    const addSymbol = (player) => {
+        symbol = player.symbol;
+    };
+
+    const getSymbol = () => symbol;
+
+    return {
+        addSymbol,
+        getSymbol
+    };
 }
 
 // Start game
