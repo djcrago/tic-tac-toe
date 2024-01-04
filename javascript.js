@@ -31,6 +31,7 @@ function gameController(
     playerTwoName = 'Player Two'
 ) {
     const board = gameboard();
+    const currentBoard = board.getBoard();
 
     const players = [
         {
@@ -50,10 +51,14 @@ function gameController(
     };
 
     const playRound = (row, column) => {
-        if (board.addSymbol(row, column, activePlayer)) {
-            changePlayer();
-            console.log(`${activePlayer.name}'s turn.`)     
-        };
+        if (currentBoard[row][column] === ' ') {
+            board.addSymbol(row, column, activePlayer);
+            changePlayer();            
+        } else {
+            console.log('Play somewhere else');
+        }
+
+        console.log(`${activePlayer.name}'s turn.`)     
 
         board.printBoard();
 
@@ -70,7 +75,6 @@ function gameController(
 
     const checkForThreeInARow = () => {
         let result;
-        const currentBoard = board.getBoard();
         const possibleWinningRows = [
             [currentBoard[0][0], currentBoard[0][1], currentBoard[0][2]],
             [currentBoard[1][0], currentBoard[1][1], currentBoard[1][2]],
@@ -93,7 +97,6 @@ function gameController(
 
     const checkForFullBoard = () => {
         let result;
-        const currentBoard = board.getBoard();
         const isBoardEmpty = [];
         currentBoard.filter((row) => {
             row.filter((cell) => {
@@ -125,12 +128,12 @@ function gameController(
 
 const game = gameController('Dexter', 'Jodie');
 
-game.playRound(0,0);
-game.playRound(0,1);
-game.playRound(0,2);
-game.playRound(1,0);
-game.playRound(1,1);
-game.playRound(1,2);
-game.playRound(2,0);
+// game.playRound(0,0);
+// game.playRound(0,1);
+// game.playRound(0,2);
+// game.playRound(1,0);
+// game.playRound(1,1);
+// game.playRound(1,2);
+// game.playRound(2,0);
 // game.playRound(2,1);
 // game.playRound(2,2);
