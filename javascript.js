@@ -1,15 +1,3 @@
-// Gameboard
-    // Include here logic for how to push symbols into a cell
-    // Be able to print board with cell values in console
-
-const playerOne = {
-    symbol: 'X'
-};
-
-const playerTwo = {
-    symbol: 'O'
-};
-
 function gameboard() {
     const rows = 3;
     const columns = 3;
@@ -19,25 +7,44 @@ function gameboard() {
         board[i] = [];
         for(let j = 0; j < columns; j++) {
             board[i].push(' ');
-        }
-    }
+        };
+    };
 
-    console.log(board);
-
-    function addSymbol(row, column, player) {
+    const addSymbol = (row, column, player) => 
         board[row][column] = (player.symbol);
-    }
 
-    addSymbol(0, 0, playerOne);
-    addSymbol(1, 1, playerTwo);
-    addSymbol(2, 2, playerOne);
-    addSymbol(1, 0, playerTwo);
+    const printBoard = () => console.log(board);
 
-    console.log(board);
+    return {
+        addSymbol,
+        printBoard
+    };
+
 }
 
-gameboard();
+function gameController(
+    playerOneName = 'Player One',
+    playerTwoName = 'Player Two'
+) {
+    const board = gameboard();
 
+    const players = [
+        {
+            name: playerOneName,
+            symbol: 'X'
+        },
+        {
+            name: playerTwoName,
+            symbol: 'O'
+        }
+    ];
+
+    let activePlayer = players[0];
+
+    const changePlayer = () => {
+        activePlayer = (activePlayer === players[0] ? players[1] : players[0]);
+    };
+}
 
 // Game controller
 
