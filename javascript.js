@@ -10,8 +10,15 @@ function gameboard() {
         };
     };
 
-    const addSymbol = (row, column, player) => 
-        board[row][column] = (player.symbol);
+    const addSymbol = (row, column, player) => {
+        if(board[row][column] === ' ') {
+            board[row][column] = (player.symbol);
+            return true;           
+        } else {
+            console.log('Play somewhere else');
+            return false;
+        };
+    }
 
     const printBoard = () => console.log(board);
 
@@ -46,16 +53,19 @@ function gameController(
     };
 
     const playRound = (row, column) => {
-        console.log(`${activePlayer.name}'s turn.`)
-        board.addSymbol(row, column, activePlayer);
+        if (board.addSymbol(row, column, activePlayer)) {
+            changePlayer();        
+            console.log(`${activePlayer.name}'s turn.`)     
+        };
         board.printBoard()
-        changePlayer();
     }
 
     return {
         playRound
     }
 }
+
+const game = gameController('Dexter', 'Jodie');
 
 // Game controller
 
