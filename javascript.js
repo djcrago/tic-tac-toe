@@ -48,35 +48,6 @@ function gameController(
         activePlayer = (activePlayer === players[0] ? players[1] : players[0]);
     };
 
-    const checkBoardStatus = () => {
-        checkForThreeInARow();
-        return checkForFullBoard();
-    }
-
-    const checkForThreeInARow = () => {
-        const currentBoard = board.getBoard();
-// Create arrary of all possible three in a row spots
-// Check if any possibility has all three spots the same symbol
-        return 'three';
-    }
-
-    const checkForFullBoard = () => {
-        const currentBoard = board.getBoard();
-        const isBoardEmpty = [];
-        currentBoard.filter((row) => {
-            row.filter((cell) => {
-                if (cell === 'X' || cell === 'O') {
-                    isBoardEmpty.push(cell);
-                }
-            });
-        });
-        console.log(isBoardEmpty);
-        console.log(isBoardEmpty.length);
-        if (isBoardEmpty.length === 9) {
-            return 'tie';
-        }
-    }
-
     const playRound = (row, column) => {
         if (board.addSymbol(row, column, activePlayer)) {
             changePlayer();        
@@ -93,6 +64,51 @@ function gameController(
         } else if (result === 'tie') {
             endGame(false);
             return;
+        }
+    }
+
+    const checkBoardStatus = () => {
+        checkForThreeInARow();
+        return checkForFullBoard();
+    }
+
+    const checkForThreeInARow = () => {
+        const currentBoard = board.getBoard();
+        const possibleWinningRows = [
+            [currentBoard[0][0], currentBoard[0][1], currentBoard[0][2]],
+            [currentBoard[1][0], currentBoard[1][1], currentBoard[1][2]],
+            [currentBoard[2][0], currentBoard[2][1], currentBoard[2][2]],
+            [currentBoard[0][0], currentBoard[1][0], currentBoard[2][0]],
+            [currentBoard[0][1], currentBoard[1][1], currentBoard[2][1]],
+            [currentBoard[0][2], currentBoard[1][2], currentBoard[2][2]],
+            [currentBoard[0][0], currentBoard[1][1], currentBoard[2][2]],
+            [currentBoard[0][2], currentBoard[1][1], currentBoard[2][0]]
+        ];
+        possibleWinningRows.forEach((row) => {
+            if (row[0] === 'X' || row[0] === 'O') {
+                if (row[0] === row[1] && row[0] === row[2]) {
+                    console.log(row);
+                    console.log('winner!');                    
+                };
+            };
+        });
+// Create arrary of all possible three in a row spots
+// Check if any possibility has all three spots the same symbol
+        return 'three';
+    }
+
+    const checkForFullBoard = () => {
+        const currentBoard = board.getBoard();
+        const isBoardEmpty = [];
+        currentBoard.filter((row) => {
+            row.filter((cell) => {
+                if (cell === 'X' || cell === 'O') {
+                    isBoardEmpty.push(cell);
+                }
+            });
+        });
+        if (isBoardEmpty.length === 9) {
+            return 'tie';
         }
     }
 
