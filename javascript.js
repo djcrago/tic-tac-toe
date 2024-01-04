@@ -44,16 +44,20 @@ function gameController(
     const changePlayer = () => {
         activePlayer = (activePlayer === players[0] ? players[1] : players[0]);
     };
+
+    const playRound = (row, column) => {
+        console.log(`${activePlayer.name}'s turn.`)
+        board.addSymbol(row, column, activePlayer);
+        board.printBoard()
+        changePlayer();
+    }
+
+    return {
+        playRound
+    }
 }
 
 // Game controller
-
-    // let activePlayer;
-
-    // Change player
-        // If activePlayer === playerOne
-            // activePlayer = playerTwo;
-        // Else activePlayer = playerOne
 
     // Play round
         // activePlayer attempts to place symbol in a location
