@@ -27,8 +27,6 @@ function gameBoard() {
     };
 }
 
-gameBoard();
-
 function cell() {
     let symbol = ' ';
 
@@ -45,23 +43,62 @@ function cell() {
 }
 
 // Start game
+function gameController(
+    playerOneName = 'Player One',
+    playerTwoName = 'Player Two'
+) {
+    const board = gameBoard();
+
+    const players = [
+        {
+            name: playerOneName,
+            symbol: 'X'
+        },
+        {
+            name: playerTwoName,
+            symbol: 'O'
+        }
+    ];
     // let activePlayer;
+    let activePlayer = players[0];
 
-// Change player
-    // If activePlayer === playerOne
-        // activePlayer = playerTwo;
-    // Else activePlayer = playerOne
+    // Change player
+        // If activePlayer === playerOne
+            // activePlayer = playerTwo;
+        // Else activePlayer = playerOne
+    const changePlayer = () => {
+        activePlayer = (activePlayer === players[0] ? players[1] : players[0]);
+    };
 
-// Start turn
-    // activePlayer attempts to place symbol in a location
-    // Check if location already has symbol in it
-        // If empty,
-            // Place symbol in location
-            // Check board
-            // Change player
-        // If occupied, 
-            // Inform player to choose a different location
+    const getActivePlayer = activePlayer;
+
+    const printNewRound = () => {
+        board.printBoard();
+        console.log(`${getActivePlayer().name}'s turn.`);
+    };
+
     // Start turn
+    const playRound = () => {
+
+        // activePlayer attempts to place symbol in a location
+        // Check if location already has symbol in it
+            // If empty,
+                // Place symbol in location
+                // Check board
+                // Change player
+            // If occupied, 
+                // Inform player to choose a different location
+        
+        changePlayer();
+
+        printNewRound();
+    }
+
+
+
+
+
+
 
 // Check board
     // Check for 3-in-a-row
@@ -80,4 +117,5 @@ function cell() {
     // If 3-in-a-row
         // Display winner
     // If tie
-        // Declare tie
+        // Declare tie    
+}
