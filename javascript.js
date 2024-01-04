@@ -22,8 +22,9 @@ function gameboard() {
         getBoard,
         printBoard
     };
-
 }
+
+
 
 function gameController(
     playerOneName = 'Player One',
@@ -50,29 +51,25 @@ function gameController(
 
     const playRound = (row, column) => {
         if (board.addSymbol(row, column, activePlayer)) {
-            changePlayer();        
+            changePlayer();
             console.log(`${activePlayer.name}'s turn.`)     
         };
 
         board.printBoard();
 
-        let result = checkBoardStatus();
-        console.log(result);
-        if (result === 'three') {
+        let checkBoard = checkForThreeInARow();
+        if (checkBoard) {
             endGame(true);
-            return;
-        } else if (result === 'tie') {
+        };
+        checkBoard = checkForFullBoard();
+        if (checkBoard) {
             endGame(false);
-            return;
-        }
-    }
+        };
 
-    const checkBoardStatus = () => {
-        checkForThreeInARow();
-        return checkForFullBoard();
-    }
+    };
 
     const checkForThreeInARow = () => {
+        let result;
         const currentBoard = board.getBoard();
         const possibleWinningRows = [
             [currentBoard[0][0], currentBoard[0][1], currentBoard[0][2]],
@@ -87,17 +84,15 @@ function gameController(
         possibleWinningRows.forEach((row) => {
             if (row[0] === 'X' || row[0] === 'O') {
                 if (row[0] === row[1] && row[0] === row[2]) {
-                    console.log(row);
-                    console.log('winner!');                    
+                    result = true;            
                 };
             };
         });
-// Create arrary of all possible three in a row spots
-// Check if any possibility has all three spots the same symbol
-        return 'three';
-    }
+        return result;
+    };
 
     const checkForFullBoard = () => {
+        let result;
         const currentBoard = board.getBoard();
         const isBoardEmpty = [];
         currentBoard.filter((row) => {
@@ -108,22 +103,24 @@ function gameController(
             });
         });
         if (isBoardEmpty.length === 9) {
-            return 'tie';
-        }
-    }
+            result = true;
+        };
+        return result;
+    };
 
     const endGame = (check) => {
         if(check) {
-            console.log(`The winner is me!`);
+            changePlayer();
+            console.log(`The winner is ${activePlayer.name}!`);
         } else {
             console.log(`It's a tie game.`);
         };
         // Stop further play / reset board.
-    }
+    };
 
     return {
         playRound
-    }
+    };
 }
 
 const game = gameController('Dexter', 'Jodie');
@@ -135,13 +132,5 @@ game.playRound(1,0);
 game.playRound(1,1);
 game.playRound(1,2);
 game.playRound(2,0);
-game.playRound(2,1);
-game.playRound(2,2);
-
-// Game controller
-
-    // Check board
-        // Check for 3-in-a-row
-            // If game is not ended,
-                // Check for full board
-
+// game.playRound(2,1);
+// game.playRound(2,2);
