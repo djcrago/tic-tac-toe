@@ -10,20 +10,16 @@ function gameboard() {
         };
     };
 
-    const addSymbol = (row, column, player) => {
-        if(board[row][column] === ' ') {
-            board[row][column] = (player.symbol);
-            return true;           
-        } else {
-            console.log('Play somewhere else');
-            return false;
-        };
-    }
+    const addSymbol = (row, column, player) => 
+        board[row][column] = (player.symbol);
+
+    const getBoard = () => board;
 
     const printBoard = () => console.log(board);
 
     return {
         addSymbol,
+        getBoard,
         printBoard
     };
 
@@ -52,12 +48,52 @@ function gameController(
         activePlayer = (activePlayer === players[0] ? players[1] : players[0]);
     };
 
+    const checkBoardStatus = () => {
+        let currentBoard = board.getBoard();
+        console.log(currentBoard);
+    }
+
+    const checkForThreeInARow = () => {
+        // If one is found end game
+        return 'three';
+    }
+
+    const checkForFullBoard = () => {
+        // If board is full and no three in a row end game
+        return 'tie';
+    }
+
     const playRound = (row, column) => {
         if (board.addSymbol(row, column, activePlayer)) {
             changePlayer();        
             console.log(`${activePlayer.name}'s turn.`)     
         };
-        board.printBoard()
+
+        board.printBoard();
+
+        checkBoardStatus();
+
+        (function() {
+            let check = checkForThreeInARow();
+            if(check === 'three') {
+                endGame(true);
+                return;
+            };
+            check = checkForFullBoard();
+            if(check === 'tie') {
+                endGame(false);
+                return;
+            };
+        })();
+    }
+
+    const endGame = (check) => {
+        if(check) {
+            console.log(`The winner is me!`);
+        } else {
+            console.log(`It's a tie game.`);
+        };
+        // Stop further play / reset board.
     }
 
     return {
@@ -69,33 +105,8 @@ const game = gameController('Dexter', 'Jodie');
 
 // Game controller
 
-    // Play round
-        // activePlayer attempts to place symbol in a location
-        // Check if location already has symbol in it
-            // If empty,
-                // Place symbol in location
-                // Check board
-                // Change player
-            // If occupied, 
-                // Inform player to choose a different location
-        // Print updated board
-        // Play round
-
     // Check board
         // Check for 3-in-a-row
             // If game is not ended,
                 // Check for full board
 
-    // Check for 3-in-a-row
-        // If one if found,
-            // End game
-
-    // Check for full board
-        // If board is full,
-            // End game
-
-    // End game
-        // If 3-in-a-row
-            // Display winner
-        // If tie
-            // Declare tie
