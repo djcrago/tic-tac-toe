@@ -30,8 +30,6 @@ function gameController(
     playerOneName = 'Player One',
     playerTwoName = 'Player Two'
 ) {
-    let board = gameboard();
-    let currentBoard = board.getBoard();
 
     const players = [
         {
@@ -50,6 +48,9 @@ function gameController(
         activePlayer = (activePlayer === players[0] ? players[1] : players[0]);
     };
 
+    let board = gameboard();
+    let currentBoard = board.getBoard();
+
     const playRound = (row, column) => {
         if (currentBoard[row][column] === ' ') {
             board.addSymbol(row, column, activePlayer);
@@ -64,15 +65,14 @@ function gameController(
         if (checkForThreeInARow()) {
             result = endGame(true);
         } else if (checkForFullBoard()) {
-            result = endGame(false);
+            result = endGame();
         }
-        if (result === false) {
+
+        if (result === 'gameOver') {
             console.log('Start A New Game?');
         } else {
             console.log(`${activePlayer.name}'s turn.`);            
         }
-
-
     };
 
     const checkForThreeInARow = () => {
@@ -116,23 +116,20 @@ function gameController(
             changePlayer();
             console.log(`The winner is ${activePlayer.name}!`);
             startNewGame();
-            return false;
         } else {
             console.log(`It's a tie game.`);
             startNewGame();
-            return false;
         };
-        // Stop further play / reset board.
+        return 'gameOver';
     };
 
     const startNewGame = () => {
         board = gameboard();
         currentBoard = board.getBoard();
-        console.log(`${activePlayer.name}'s turn.`);
-        board.printBoard();
     }    
 
-    startNewGame();
+    console.log(`${activePlayer.name}'s turn.`);
+    board.printBoard();
 
     return {
         playRound
@@ -140,13 +137,3 @@ function gameController(
 }
 
 const game = gameController('Dexter', 'Jodie');
-
-game.playRound(0,0);
-game.playRound(0,1);
-game.playRound(0,2);
-game.playRound(1,0);
-game.playRound(1,1);
-game.playRound(1,2);
-game.playRound(2,0);
-// game.playRound(2,1);
-// game.playRound(2,2);
