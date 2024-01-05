@@ -26,6 +26,44 @@ const gameboard = (function() {
 
 
 
+function displayController() {
+    // Render contents of gameboard
+    const currentBoard = gameboard.getBoard();
+    const boardPosition = [
+        currentBoard[0][0],
+        currentBoard[0][1],
+        currentBoard[0][2],
+        currentBoard[1][0],
+        currentBoard[1][1],
+        currentBoard[1][2],
+        currentBoard[2][0],
+        currentBoard[2][1],
+        currentBoard[2][2]
+    ]
+
+    const render = () => {
+        const positions = document.querySelectorAll('.position');
+        let i = 0;
+        positions.forEach((position) => {
+            position.textContent = boardPosition[i];
+            i++;
+        });
+    }
+
+    render();
+
+    // Add marks to specific spots
+        // Keep logic to prevent playing in already taken spot
+    // Allow players to put in names
+    // Button to start and restat game
+    // Display results upon game end
+
+    return {
+        render
+    }
+}
+
+
 function gameController(
     playerOneName = 'Player One',
     playerTwoName = 'Player Two'
@@ -59,6 +97,7 @@ function gameController(
         };
 
         gameboard.printBoard();
+        displayController();
 
         let result;
         if (checkForThreeInARow()) {
@@ -138,41 +177,7 @@ function gameController(
 
 
 
-function displayController() {
-    // Render contents of gameboard
-    const currentBoard = gameboard.getBoard();
-    const boardPosition = [
-        currentBoard[0][0],
-        currentBoard[0][1],
-        currentBoard[0][2],
-        currentBoard[1][0],
-        currentBoard[1][1],
-        currentBoard[1][2],
-        currentBoard[2][0],
-        currentBoard[2][1],
-        currentBoard[2][2],
-    ]
 
-    const render = () => {
-        const positions = document.querySelectorAll('.position');
-        let i = 0;
-        positions.forEach((position) => {
-            position.textContent = boardPosition[i];
-            i++;
-        });
-    }
-
-    render();
-    // Add marks to specific spots
-        // Keep logic to prevent playing in already taken spot
-    // Allow players to put in names
-    // Button to start and restat game
-    // Display results upon game end
-
-    return {
-        render
-    }
-}
 
 
 
