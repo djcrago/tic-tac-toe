@@ -30,8 +30,8 @@ function gameController(
     playerOneName = 'Player One',
     playerTwoName = 'Player Two'
 ) {
-    const board = gameboard();
-    const currentBoard = board.getBoard();
+    let board = gameboard();
+    let currentBoard = board.getBoard();
 
     const players = [
         {
@@ -115,16 +115,24 @@ function gameController(
         if(result) {
             changePlayer();
             console.log(`The winner is ${activePlayer.name}!`);
+            startNewGame();
             return false;
         } else {
             console.log(`It's a tie game.`);
+            startNewGame();
             return false;
         };
         // Stop further play / reset board.
     };
 
-    console.log(`${activePlayer.name}'s turn.`);
-    board.printBoard();
+    const startNewGame = () => {
+        board = gameboard();
+        currentBoard = board.getBoard();
+        console.log(`${activePlayer.name}'s turn.`);
+        board.printBoard();
+    }    
+
+    startNewGame();
 
     return {
         playRound
