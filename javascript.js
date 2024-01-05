@@ -1,4 +1,4 @@
-const gameboard = (function() {
+function createGameboard() {
 
     const rows = 3;
     const columns = 3;
@@ -21,10 +21,11 @@ const gameboard = (function() {
         addSymbol,
         getBoard,
     };
+};
 
-})();
 
 
+let gameboard = createGameboard();
 
 const displayController = (function() {
 
@@ -42,14 +43,15 @@ const displayController = (function() {
             const column = j;
             j++;
             position.addEventListener('click', () => {
-                gameController.playRound(row, column);
+                game.playRound(row, column);
             });
         });
     })();
 
-    let currentBoard = gameboard.getBoard();    
+
 
     const render = () => {
+        let currentBoard = gameboard.getBoard();            
         const boardPosition = [
             currentBoard[0][0],
             currentBoard[0][1],
@@ -83,7 +85,7 @@ const displayController = (function() {
 
 
 
-const gameController = (function(
+function gameController(
     playerOneName = 'Player One',
     playerTwoName = 'Player Two'
 ) {
@@ -131,9 +133,8 @@ const gameController = (function(
                 result = `It's a tie game.`;
                 displayController.displayInfo(result);
                 gameOver = true;
-            }
+            };
         };
-
     };
 
     const checkForThreeInARow = () => {
@@ -172,23 +173,36 @@ const gameController = (function(
         };
     };
 
-    // Reset board
-    // const startNewGame = () => {
-    //     board = gameboard();
-    //     currentBoard = board.getBoard();
-    // }    
-    
-
     return {
         playRound
     };
-})();
+};
+
+
+
+const newGameBtn = document.querySelector('button');
+newGameBtn.addEventListener('click', () => {
+    console.log(gameboard.getBoard());
+    gameboard = createGameboard();
+    console.log(gameboard.getBoard());
+    displayController.render();
+});
+
+
+const startNewGame = () => {
+
+    const playerOneName = document.querySelector('input[id="playerOne"]');
+    const playerTwoName = document.querySelector('input[id="playerTwo"]');
+
+};
+
+startNewGame();
+
+
+let game = gameController();
 
 
 
 
-    // Add marks to specific spots
-        // Keep logic to prevent playing in already taken spot
     // Allow players to put in names
     // Button to start and restart game
-    // Display results upon game end
