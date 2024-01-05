@@ -17,13 +17,9 @@ const gameboard = (function() {
 
     const getBoard = () => board;
 
-    const printBoard = () => console.log(board);
-    // Delete when browser is working
-
     return {
         addSymbol,
         getBoard,
-        printBoard // Delete when browser is working
     };
 
 })();
@@ -73,14 +69,15 @@ const displayController = (function() {
         });
     };
 
-    const displayResult = (result) => {
-        const display = document.querySelector('.display');
-        display.textContent = result;
+    const display = document.querySelector('.display');
+
+    const displayInfo = (info) => {
+        display.textContent = info;
     };
 
     return {
         render,
-        displayResult
+        displayInfo
     }
 })();
 
@@ -114,21 +111,22 @@ const gameController = (function(
         if (currentBoard[row][column] === ' ') {
             gameboard.addSymbol(row, column, activePlayer);
             displayController.render();
-            changePlayer();            
+            changePlayer();
+            displayController.displayInfo(`${activePlayer.name}'s turn.`);
         } else {
             alert('Play somewhere else');
         };
 
-        gameboard.printBoard();
+
 
         let result;
         if (checkForThreeInARow()) {
             changePlayer();
             result = `The winner is ${activePlayer.name}!`;
-            displayController.displayResult(result);
+            displayController.displayInfo(result);
         } else if (checkForFullBoard()) {
             result = `It's a tie game.`;
-            displayController.displayResult(result);
+            displayController.displayInfo(result);
         }
 
         if (result === 'gameOver') {
@@ -174,24 +172,12 @@ const gameController = (function(
         };
     };
 
-    const endGame = (result) => {
-        if(result) {
-            changePlayer();
-            console.log(`The winner is ${activePlayer.name}!`);
-        } else {
-            console.log(`It's a tie game.`);
-        };
-        return 'gameOver';
-    };
-
     // Reset board
     // const startNewGame = () => {
     //     board = gameboard();
     //     currentBoard = board.getBoard();
     // }    
-
-    console.log(`${activePlayer.name}'s turn.`);
-    gameboard.printBoard();
+    
 
     return {
         playRound
