@@ -184,6 +184,8 @@ function gameController(
             players[0].name = playerOneName.value;
             players[1].name = playerTwoName.value;
             gameOver = false;
+            playerOneName.value = '';
+            playerTwoName.value = '';
         });
     })();
 
