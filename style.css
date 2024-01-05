@@ -17,7 +17,7 @@ h1 {
 }
 
 .board-container {
-    background-color: aqua;
+    background-color: lightblue;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -28,4 +28,16 @@ h1 {
 
 .board {
     display: flex;
+    flex-wrap: wrap;
+    width: 306px;
+}
+
+.position {
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #000;
+    background-color: rgb(245, 245, 245);
 }

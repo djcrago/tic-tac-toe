@@ -1,4 +1,4 @@
-function gameboard() {
+const gameboard = (function() {
     const rows = 3;
     const columns = 3;
     const board = [];
@@ -22,7 +22,7 @@ function gameboard() {
         getBoard,
         printBoard
     };
-}
+})();
 
 
 
@@ -48,18 +48,17 @@ function gameController(
         activePlayer = (activePlayer === players[0] ? players[1] : players[0]);
     };
 
-    let board = gameboard();
-    let currentBoard = board.getBoard();
+    let currentBoard = gameboard.getBoard();
 
     const playRound = (row, column) => {
         if (currentBoard[row][column] === ' ') {
-            board.addSymbol(row, column, activePlayer);
+            gameboard.addSymbol(row, column, activePlayer);
             changePlayer();            
         } else {
             console.log('Play somewhere else');
         };
 
-        board.printBoard();
+        gameboard.printBoard();
 
         let result;
         if (checkForThreeInARow()) {
@@ -123,17 +122,65 @@ function gameController(
         return 'gameOver';
     };
 
-    const startNewGame = () => {
-        board = gameboard();
-        currentBoard = board.getBoard();
-    }    
+    // Reset board
+    // const startNewGame = () => {
+    //     board = gameboard();
+    //     currentBoard = board.getBoard();
+    // }    
 
     console.log(`${activePlayer.name}'s turn.`);
-    board.printBoard();
+    gameboard.printBoard();
 
     return {
         playRound
     };
 }
 
-let game = gameController('Jodie', 'Dexter');
+
+
+function displayController() {
+    // Render contents of gameboard
+    const currentBoard = gameboard.getBoard();
+    const boardPosition = [
+        currentBoard[0][0],
+        currentBoard[0][1],
+        currentBoard[0][2],
+        currentBoard[1][0],
+        currentBoard[1][1],
+        currentBoard[1][2],
+        currentBoard[2][0],
+        currentBoard[2][1],
+        currentBoard[2][2],
+    ]
+
+    const render = () => {
+        const positions = document.querySelectorAll('.position');
+        let i = 0;
+        positions.forEach((position) => {
+            position.textContent = boardPosition[i];
+            i++;
+        });
+    }
+
+    render();
+    // Add marks to specific spots
+        // Keep logic to prevent playing in already taken spot
+    // Allow players to put in names
+    // Button to start and restat game
+    // Display results upon game end
+
+    return {
+        render
+    }
+}
+
+
+
+let game = gameController();
+
+game.playRound(0,0);
+displayController();
+game.playRound(1,1);
+displayController();
+game.playRound(1,2);
+displayController();
