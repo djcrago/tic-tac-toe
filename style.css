@@ -16,6 +16,13 @@ h1 {
     text-align: center;
 }
 
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: auto;
+}
+
 .display-container {
     display: flex;
 }
