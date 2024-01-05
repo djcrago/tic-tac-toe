@@ -1,4 +1,4 @@
-function gameboard() {
+const gameboard = (function() {
     const rows = 3;
     const columns = 3;
     const board = [];
@@ -22,7 +22,7 @@ function gameboard() {
         getBoard,
         printBoard
     };
-}
+})();
 
 
 
@@ -48,18 +48,17 @@ function gameController(
         activePlayer = (activePlayer === players[0] ? players[1] : players[0]);
     };
 
-    let board = gameboard();
-    let currentBoard = board.getBoard();
+    const board = gameboard.getBoard();
 
     const playRound = (row, column) => {
-        if (currentBoard[row][column] === ' ') {
-            board.addSymbol(row, column, activePlayer);
+        if (board[row][column] === ' ') {
+            gameboard.addSymbol(row, column, activePlayer);
             changePlayer();            
         } else {
             console.log('Play somewhere else');
         };
 
-        board.printBoard();
+        gameboard.printBoard();
 
         let result;
         if (checkForThreeInARow()) {
@@ -78,14 +77,14 @@ function gameController(
     const checkForThreeInARow = () => {
         let result;
         const possibleWinningRows = [
-            [currentBoard[0][0], currentBoard[0][1], currentBoard[0][2]],
-            [currentBoard[1][0], currentBoard[1][1], currentBoard[1][2]],
-            [currentBoard[2][0], currentBoard[2][1], currentBoard[2][2]],
-            [currentBoard[0][0], currentBoard[1][0], currentBoard[2][0]],
-            [currentBoard[0][1], currentBoard[1][1], currentBoard[2][1]],
-            [currentBoard[0][2], currentBoard[1][2], currentBoard[2][2]],
-            [currentBoard[0][0], currentBoard[1][1], currentBoard[2][2]],
-            [currentBoard[0][2], currentBoard[1][1], currentBoard[2][0]]
+            [board[0][0], board[0][1], board[0][2]],
+            [board[1][0], board[1][1], board[1][2]],
+            [board[2][0], board[2][1], board[2][2]],
+            [board[0][0], board[1][0], board[2][0]],
+            [board[0][1], board[1][1], board[2][1]],
+            [board[0][2], board[1][2], board[2][2]],
+            [board[0][0], board[1][1], board[2][2]],
+            [board[0][2], board[1][1], board[2][0]]
         ];
         possibleWinningRows.forEach((row) => {
             if (row[0] === 'X' || row[0] === 'O') {
@@ -99,7 +98,7 @@ function gameController(
 
     const checkForFullBoard = () => {
         const isBoardEmpty = [];
-        currentBoard.filter((row) => {
+        board.filter((row) => {
             row.filter((cell) => {
                 if (cell === 'X' || cell === 'O') {
                     isBoardEmpty.push(cell);
@@ -115,25 +114,18 @@ function gameController(
         if(result) {
             changePlayer();
             console.log(`The winner is ${activePlayer.name}!`);
-            startNewGame();
         } else {
             console.log(`It's a tie game.`);
-            startNewGame();
         };
         return 'gameOver';
     };
 
-    const startNewGame = () => {
-        board = gameboard();
-        currentBoard = board.getBoard();
-    }    
-
     console.log(`${activePlayer.name}'s turn.`);
-    board.printBoard();
+    gameboard.printBoard();
 
     return {
         playRound
     };
 }
 
-const game = gameController('Dexter', 'Jodie');
+let game = gameController('Dexter', 'Jodie');
