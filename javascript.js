@@ -174,14 +174,18 @@ function gameController(
         };
     };
 
-    const newGameBtn = document.querySelector('button');
-    newGameBtn.addEventListener('click', () => {
-        console.log(gameboard.getBoard());
-        gameboard = createGameboard();
-        console.log(gameboard.getBoard());
-        displayController.render();
-        gameOver = false;
-    });
+    const startNewGame = (function() {
+        const newGameBtn = document.querySelector('button');
+        const playerOneName = document.querySelector('input[id="playerOne"]');
+        const playerTwoName = document.querySelector('input[id="playerTwo"]');
+        newGameBtn.addEventListener('click', () => {
+            gameboard = createGameboard();
+            displayController.render();
+            players[0].name = playerOneName.value;
+            players[1].name = playerTwoName.value;
+            gameOver = false;
+        });
+    })();
 
     return {
         playRound
