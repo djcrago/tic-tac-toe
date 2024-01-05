@@ -20,8 +20,30 @@ const gameboard = (function() {
     return {
         addSymbol,
         getBoard,
-        printBoard
+        printBoard,
     };
+})();
+
+const addEventListener = (function() {
+    const positions = document.querySelectorAll('.position'); 
+    let i = 0;
+    let j = 0;
+    positions.forEach((position) => {
+        if (j === 3) {
+            j = 0;
+            i++;
+        }
+        const row = i;
+        const column = j;
+        j++;
+        position.addEventListener('click', () => {
+            console.log(position)
+            gameboard.printBoard();
+            gameboard.addSymbol(row, column, {symbol: 'X'});
+            gameboard.printBoard();
+        })
+
+    });
 })();
 
 
@@ -41,8 +63,10 @@ function displayController() {
         currentBoard[2][2]
     ]
 
+    const positions = document.querySelectorAll('.position'); 
+
     const render = () => {
-        const positions = document.querySelectorAll('.position');
+
         let i = 0;
         positions.forEach((position) => {
             position.textContent = boardPosition[i];
