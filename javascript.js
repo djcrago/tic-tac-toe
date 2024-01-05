@@ -48,10 +48,8 @@ const displayController = (function() {
         });
     })();
 
-
-
     const render = () => {
-        let currentBoard = gameboard.getBoard();            
+        const currentBoard = gameboard.getBoard();            
         const boardPosition = [
             currentBoard[0][0],
             currentBoard[0][1],
@@ -107,10 +105,11 @@ function gameController(
         activePlayer = (activePlayer === players[0] ? players[1] : players[0]);
     };
 
-    let currentBoard = gameboard.getBoard();
+
 
     let gameOver;
     const playRound = (row, column) => {
+        let currentBoard = gameboard.getBoard();        
         if (gameOver) {
             displayController.displayInfo('Start a new game.')
         } else {
@@ -138,6 +137,7 @@ function gameController(
     };
 
     const checkForThreeInARow = () => {
+        let currentBoard = gameboard.getBoard(); 
         let result;
         const possibleWinningRows = [
             [currentBoard[0][0], currentBoard[0][1], currentBoard[0][2]],
@@ -160,6 +160,7 @@ function gameController(
     };
 
     const checkForFullBoard = () => {
+        let currentBoard = gameboard.getBoard(); 
         const isBoardEmpty = [];
         currentBoard.filter((row) => {
             row.filter((cell) => {
@@ -173,20 +174,20 @@ function gameController(
         };
     };
 
+    const newGameBtn = document.querySelector('button');
+    newGameBtn.addEventListener('click', () => {
+        console.log(gameboard.getBoard());
+        gameboard = createGameboard();
+        console.log(gameboard.getBoard());
+        displayController.render();
+        gameOver = false;
+    });
+
     return {
         playRound
     };
 };
 
-
-
-const newGameBtn = document.querySelector('button');
-newGameBtn.addEventListener('click', () => {
-    console.log(gameboard.getBoard());
-    gameboard = createGameboard();
-    console.log(gameboard.getBoard());
-    displayController.render();
-});
 
 
 const startNewGame = () => {
