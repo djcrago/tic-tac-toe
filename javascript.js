@@ -48,7 +48,7 @@ function displayController() {
             position.textContent = boardPosition[i];
             i++;
         });
-    }
+    };
 
     render();
 

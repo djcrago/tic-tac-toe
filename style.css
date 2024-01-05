@@ -41,3 +41,12 @@ h1 {
     border: 1px solid #000;
     background-color: rgb(245, 245, 245);
 }
+
+.position:hover {
+    background-color: rgb(228, 228, 228);
+    cursor: pointer;
+}
+
+.position:active {
+    background-color: white;
+}
