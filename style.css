@@ -16,10 +16,20 @@ h1 {
     text-align: center;
 }
 
+.display-container {
+    display: flex;
+}
+
 .display {
     height: 75px;
+    min-width: 250px;
+    padding: 0px 15px;
     border: 1px solid #000;
-    width: 250px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    flex: auto;
 }
 
 .board-container {
