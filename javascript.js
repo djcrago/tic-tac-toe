@@ -175,14 +175,19 @@ function gameController(
     };
 
     const startNewGame = (function() {
+        displayController.displayInfo(`${activePlayer.name}'s turn.`);  
         const newGameBtn = document.querySelector('button');
         const playerOneName = document.querySelector('input[id="playerOne"]');
         const playerTwoName = document.querySelector('input[id="playerTwo"]');
         newGameBtn.addEventListener('click', () => {
             gameboard = createGameboard();
             displayController.render();
-            players[0].name = playerOneName.value;
-            players[1].name = playerTwoName.value;
+            console.log(playerOneName.value);
+            if (playerOneName.value !== '' && playerTwoName.value !== '') {
+                players[0].name = playerOneName.value;
+                players[1].name = playerTwoName.value;         
+            };
+            displayController.displayInfo(`${activePlayer.name}'s turn.`);            
             gameOver = false;
             playerOneName.value = '';
             playerTwoName.value = '';
@@ -193,18 +198,6 @@ function gameController(
         playRound
     };
 };
-
-
-
-const startNewGame = () => {
-
-    const playerOneName = document.querySelector('input[id="playerOne"]');
-    const playerTwoName = document.querySelector('input[id="playerTwo"]');
-
-};
-
-startNewGame();
-
 
 let game = gameController();
 
