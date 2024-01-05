@@ -28,11 +28,9 @@ const gameboard = (function() {
 
 const displayController = (function() {
 
-    let currentBoard = gameboard.getBoard();
-
     const positions = document.querySelectorAll('.position');
 
-    const addEventListener = (function() {
+    const addEventListeners = (function() {
         let i = 0;
         let j = 0;
         positions.forEach((position) => {
@@ -48,6 +46,8 @@ const displayController = (function() {
             });
         });
     })();
+
+    let currentBoard = gameboard.getBoard();    
 
     const render = () => {
         const boardPosition = [
@@ -107,33 +107,33 @@ const gameController = (function(
 
     let currentBoard = gameboard.getBoard();
 
+    let gameOver;
     const playRound = (row, column) => {
-        if (currentBoard[row][column] === ' ') {
-            gameboard.addSymbol(row, column, activePlayer);
-            displayController.render();
-            changePlayer();
-            displayController.displayInfo(`${activePlayer.name}'s turn.`);
+        if (gameOver) {
+            displayController.displayInfo('Start a new game.')
         } else {
-            alert('Play somewhere else');
+            if (currentBoard[row][column] === ' ') {
+                gameboard.addSymbol(row, column, activePlayer);
+                displayController.render();
+                changePlayer();
+                displayController.displayInfo(`${activePlayer.name}'s turn.`);
+            } else {
+                alert('Play somewhere else');
+            };
+
+            let result;
+            if (checkForThreeInARow()) {
+                changePlayer();
+                result = `The winner is ${activePlayer.name}!`;
+                displayController.displayInfo(result);
+                gameOver = true;
+            } else if (checkForFullBoard()) {
+                result = `It's a tie game.`;
+                displayController.displayInfo(result);
+                gameOver = true;
+            }
         };
 
-
-
-        let result;
-        if (checkForThreeInARow()) {
-            changePlayer();
-            result = `The winner is ${activePlayer.name}!`;
-            displayController.displayInfo(result);
-        } else if (checkForFullBoard()) {
-            result = `It's a tie game.`;
-            displayController.displayInfo(result);
-        }
-
-        if (result === 'gameOver') {
-            console.log('Start A New Game?');
-        } else {
-            console.log(`${activePlayer.name}'s turn.`);            
-        }
     };
 
     const checkForThreeInARow = () => {
