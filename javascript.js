@@ -1,4 +1,5 @@
 const gameboard = (function() {
+
     const rows = 3;
     const columns = 3;
     const board = [];
@@ -10,48 +11,30 @@ const gameboard = (function() {
         };
     };
 
-    const addSymbol = (row, column, player) => 
-        board[row][column] = (player.symbol);
+    const addSymbol = (row, column, player) => {
+        board[row][column] = player.symbol;
+    }
 
     const getBoard = () => board;
 
     const printBoard = () => console.log(board);
+    // Delete when browser is working
 
     return {
         addSymbol,
         getBoard,
-        printBoard,
+        printBoard // Delete when browser is working
     };
+
 })();
 
 
 
-function displayController() {
-    // Render contents of gameboard
+const displayController = (function() {
+
     let currentBoard = gameboard.getBoard();
-    let boardPosition = [
-        currentBoard[0][0],
-        currentBoard[0][1],
-        currentBoard[0][2],
-        currentBoard[1][0],
-        currentBoard[1][1],
-        currentBoard[1][2],
-        currentBoard[2][0],
-        currentBoard[2][1],
-        currentBoard[2][2]
-    ]
 
     const positions = document.querySelectorAll('.position');
-
-    const render = () => {
-        let i = 0;
-        positions.forEach((position) => {
-            position.textContent = boardPosition[i];
-            i++;
-        });
-    };
-
-    render();
 
     const addEventListener = (function() {
         let i = 0;
@@ -70,16 +53,31 @@ function displayController() {
         });
     })();
 
-    // Add marks to specific spots
-        // Keep logic to prevent playing in already taken spot
-    // Allow players to put in names
-    // Button to start and restat game
-    // Display results upon game end
+    const render = () => {
+        const boardPosition = [
+            currentBoard[0][0],
+            currentBoard[0][1],
+            currentBoard[0][2],
+            currentBoard[1][0],
+            currentBoard[1][1],
+            currentBoard[1][2],
+            currentBoard[2][0],
+            currentBoard[2][1],
+            currentBoard[2][2]
+        ];
+
+        let i = 0;
+        positions.forEach((position) => {
+            position.textContent = boardPosition[i];
+            i++;
+        });
+    };
 
     return {
         render
     }
-}
+})();
+
 
 
 const gameController = (function(
@@ -109,13 +107,13 @@ const gameController = (function(
     const playRound = (row, column) => {
         if (currentBoard[row][column] === ' ') {
             gameboard.addSymbol(row, column, activePlayer);
+            displayController.render();
             changePlayer();            
         } else {
-            console.log('Play somewhere else');
+            alert('Play somewhere else');
         };
 
         gameboard.printBoard();
-        displayController();
 
         let result;
         if (checkForThreeInARow()) {
@@ -196,14 +194,8 @@ const gameController = (function(
 
 
 
-
-
-
-// let game = gameController();
-
-gameController.playRound(0,0);
-// displayController();
-// game.playRound(1,1);
-// displayController();
-// game.playRound(1,2);
-// displayController();
+    // Add marks to specific spots
+        // Keep logic to prevent playing in already taken spot
+    // Allow players to put in names
+    // Button to start and restart game
+    // Display results upon game end
