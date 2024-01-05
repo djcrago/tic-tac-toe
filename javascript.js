@@ -24,34 +24,12 @@ const gameboard = (function() {
     };
 })();
 
-const addEventListener = (function() {
-    const positions = document.querySelectorAll('.position'); 
-    let i = 0;
-    let j = 0;
-    positions.forEach((position) => {
-        if (j === 3) {
-            j = 0;
-            i++;
-        }
-        const row = i;
-        const column = j;
-        j++;
-        position.addEventListener('click', () => {
-            console.log(position)
-            gameboard.printBoard();
-            gameboard.addSymbol(row, column, {symbol: 'X'});
-            gameboard.printBoard();
-        })
-
-    });
-})();
-
 
 
 function displayController() {
     // Render contents of gameboard
-    const currentBoard = gameboard.getBoard();
-    const boardPosition = [
+    let currentBoard = gameboard.getBoard();
+    let boardPosition = [
         currentBoard[0][0],
         currentBoard[0][1],
         currentBoard[0][2],
@@ -63,10 +41,9 @@ function displayController() {
         currentBoard[2][2]
     ]
 
-    const positions = document.querySelectorAll('.position'); 
+    const positions = document.querySelectorAll('.position');
 
     const render = () => {
-
         let i = 0;
         positions.forEach((position) => {
             position.textContent = boardPosition[i];
@@ -75,6 +52,23 @@ function displayController() {
     };
 
     render();
+
+    const addEventListener = (function() {
+        let i = 0;
+        let j = 0;
+        positions.forEach((position) => {
+            if (j === 3) {
+                j = 0;
+                i++;
+            }
+            const row = i;
+            const column = j;
+            j++;
+            position.addEventListener('click', () => {
+                gameController.playRound(row, column);
+            });
+        });
+    })();
 
     // Add marks to specific spots
         // Keep logic to prevent playing in already taken spot
@@ -88,7 +82,7 @@ function displayController() {
 }
 
 
-function gameController(
+const gameController = (function(
     playerOneName = 'Player One',
     playerTwoName = 'Player Two'
 ) {
@@ -197,7 +191,7 @@ function gameController(
     return {
         playRound
     };
-}
+})();
 
 
 
@@ -205,11 +199,11 @@ function gameController(
 
 
 
-let game = gameController();
+// let game = gameController();
 
-game.playRound(0,0);
-displayController();
-game.playRound(1,1);
-displayController();
-game.playRound(1,2);
-displayController();
+gameController.playRound(0,0);
+// displayController();
+// game.playRound(1,1);
+// displayController();
+// game.playRound(1,2);
+// displayController();
