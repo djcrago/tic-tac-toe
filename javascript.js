@@ -73,8 +73,14 @@ const displayController = (function() {
         });
     };
 
+    const displayResult = (result) => {
+        const display = document.querySelector('.display');
+        display.textContent = result;
+    };
+
     return {
-        render
+        render,
+        displayResult
     }
 })();
 
@@ -117,9 +123,12 @@ const gameController = (function(
 
         let result;
         if (checkForThreeInARow()) {
-            result = endGame(true);
+            changePlayer();
+            result = `The winner is ${activePlayer.name}!`;
+            displayController.displayResult(result);
         } else if (checkForFullBoard()) {
-            result = endGame();
+            result = `It's a tie game.`;
+            displayController.displayResult(result);
         }
 
         if (result === 'gameOver') {
@@ -169,10 +178,8 @@ const gameController = (function(
         if(result) {
             changePlayer();
             console.log(`The winner is ${activePlayer.name}!`);
-            startNewGame();
         } else {
             console.log(`It's a tie game.`);
-            startNewGame();
         };
         return 'gameOver';
     };

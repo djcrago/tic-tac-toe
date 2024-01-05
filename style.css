@@ -16,13 +16,20 @@ h1 {
     text-align: center;
 }
 
+.display {
+    height: 75px;
+    border: 1px solid #000;
+    width: 250px;
+}
+
 .board-container {
     background-color: lightblue;
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 15px;
-    margin: auto;
+    margin-top: auto;
+    margin-bottom: 50px;
     
 }
 
