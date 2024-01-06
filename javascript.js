@@ -1,9 +1,9 @@
 function createGameboard() {
-
     const rows = 3;
     const columns = 3;
     const board = [];
 
+    // Create a 2D 3x3 board
     for(let i = 0; i < rows; i++) {
         board[i] = [];
         for(let j = 0; j < columns; j++) {
@@ -21,17 +21,21 @@ function createGameboard() {
         addSymbol,
         getBoard,
     };
+
 };
 
-
-
+// This need to be accessible by both modules and we need to be able to create
+// a new gameboard with the 'Start New Game' button
 let gameboard = createGameboard();
 
-const displayController = (function() {
 
+
+
+
+const displayController = (function() {
     const positions = document.querySelectorAll('.position');
 
-    const addEventListeners = (function() {
+    (function addEventListeners() {
         let i = 0;
         let j = 0;
         positions.forEach((position) => {
@@ -43,7 +47,7 @@ const displayController = (function() {
             const column = j;
             j++;
             position.addEventListener('click', () => {
-                game.playRound(row, column);
+                gameController.playRound(row, column);
             });
         });
     })();
@@ -61,7 +65,6 @@ const displayController = (function() {
             currentBoard[2][1],
             currentBoard[2][2]
         ];
-
         let i = 0;
         positions.forEach((position) => {
             position.textContent = boardPosition[i];
@@ -78,16 +81,18 @@ const displayController = (function() {
     return {
         render,
         displayInfo
-    }
+    };
+
 })();
 
 
 
-function gameController(
+
+
+const gameController = (function(
     playerOneName = 'Player One',
     playerTwoName = 'Player Two'
 ) {
-
     const players = [
         {
             name: playerOneName,
@@ -105,9 +110,8 @@ function gameController(
         activePlayer = (activePlayer === players[0] ? players[1] : players[0]);
     };
 
-
-
     let gameOver;
+
     const playRound = (row, column) => {
         let currentBoard = gameboard.getBoard();        
         if (gameOver) {
@@ -115,23 +119,23 @@ function gameController(
         } else {
             if (currentBoard[row][column] === ' ') {
                 gameboard.addSymbol(row, column, activePlayer);
-                displayController.render();
                 changePlayer();
+                displayController.render();                
                 displayController.displayInfo(`${activePlayer.name}'s turn.`);
             } else {
-                alert('Play somewhere else');
+                displayController.displayInfo('Play somewhere else.');
             };
 
             let result;
-            if (checkForThreeInARow()) {
-                changePlayer();
-                result = `The winner is ${activePlayer.name}!`;
+            if (checkForThreeInARow() || checkForFullBoard()) {
+                if (checkForThreeInARow()) {
+                    changePlayer();
+                    result = `The winner is ${activePlayer.name}!`;
+                } else if (checkForFullBoard()) {
+                    result = `It's a tie game.`;
+                }
+                gameOver = true;                
                 displayController.displayInfo(result);
-                gameOver = true;
-            } else if (checkForFullBoard()) {
-                result = `It's a tie game.`;
-                displayController.displayInfo(result);
-                gameOver = true;
             };
         };
     };
@@ -166,7 +170,7 @@ function gameController(
             row.filter((cell) => {
                 if (cell === 'X' || cell === 'O') {
                     isBoardEmpty.push(cell);
-                }
+                };
             });
         });
         if (isBoardEmpty.length === 9) {
@@ -174,35 +178,29 @@ function gameController(
         };
     };
 
-    const startNewGame = (function() {
-        displayController.displayInfo(`${activePlayer.name}'s turn.`);  
+    (function startNewGame() {
+        displayController.displayInfo(`${activePlayer.name}'s turn.`);
         const newGameBtn = document.querySelector('button');
         const playerOneName = document.querySelector('input[id="playerOne"]');
         const playerTwoName = document.querySelector('input[id="playerTwo"]');
         newGameBtn.addEventListener('click', () => {
             gameboard = createGameboard();
             displayController.render();
-            console.log(playerOneName.value);
-            if (playerOneName.value !== '' && playerTwoName.value !== '') {
-                players[0].name = playerOneName.value;
-                players[1].name = playerTwoName.value;         
+            if (playerOneName.value !== '') {
+                players[0].name = playerOneName.value;       
             };
-            displayController.displayInfo(`${activePlayer.name}'s turn.`);            
+            if (playerTwoName.value !== '') {
+                players[1].name = playerTwoName.value;       
+            };  
             gameOver = false;
             playerOneName.value = '';
             playerTwoName.value = '';
+            displayController.displayInfo(`${activePlayer.name}'s turn.`);
         });
     })();
 
     return {
         playRound
     };
-};
 
-let game = gameController();
-
-
-
-
-    // Allow players to put in names
-    // Button to start and restart game
+})();
